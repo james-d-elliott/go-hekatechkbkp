@@ -15,7 +15,6 @@ before_script:
       fi
     else
       export SEMVER=0
-      export test=test
     fi
 deploy:
   - provider: releases
