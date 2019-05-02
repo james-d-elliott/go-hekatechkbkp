@@ -2,7 +2,7 @@ package main
 
 import (
 	"bufio"
-	"crypto/sha1"
+	"crypto/sha256"
 	"encoding/hex"
 	"flag"
 	"io"
@@ -39,12 +39,12 @@ func main() {
 	var chunkSum []byte
 
 	//Declare Set
-	chunkHasher := sha1.New()
+	chunkHasher := sha256.New()
 	chunksValid, chunksInvalid, filesValid, filesInvalid, chunksize := 0, 0, 0, 0, 1024*4096
 
 	//Regexes
-	validSumsFile, _ := regexp.Compile("(?i).*?.sha1sums$")
-	validSHA1, _ := regexp.Compile("(?i)^[0-9a-f]{40}$")
+	validSumsFile, _ := regexp.Compile("(?i).*?.sha256sums$")
+	validSHA256, _ := regexp.Compile("(?i)^[0-9a-f]{64}$")
 
 	//Flags for CLI
 	var logging, logConsole bool
@@ -89,7 +89,7 @@ func main() {
 	files, err := ioutil.ReadDir(directory)
 	check(err, true)
 
-	//Iterate files finding .sha1sums files
+	//Iterate files finding checksum list files
 	for _, f := range files {
 		fileNameSums := f.Name()
 		if validSumsFile.MatchString(fileNameSums) {
@@ -115,9 +115,9 @@ func main() {
 				var sums []string
 				scanner := bufio.NewScanner(fileSums)
 				for scanner.Scan() {
-					if validSHA1.MatchString(scanner.Text()) {
+					if validSHA256.MatchString(scanner.Text()) {
 						if debug >= 1 {
-							log.Printf("VERBOSE: found valid sha1 checksum %s", scanner.Text())
+							log.Printf("VERBOSE: found valid checksum %s", scanner.Text())
 						}
 						sums = append(sums, strings.ToLower(scanner.Text()))
 					} else {
@@ -129,7 +129,7 @@ func main() {
 								log.Printf("VERBOSE: chunk size set by sum file")
 							}
 						} else if debug >= 1 {
-							log.Printf("VERBOSE: found invalid sha1 checksum %s", scanner.Text())
+							log.Printf("VERBOSE: found invalid checksum %s", scanner.Text())
 						}
 					}
 				}
