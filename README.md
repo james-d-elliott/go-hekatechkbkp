@@ -1,4 +1,5 @@
 # james-d-elliott/go-hekatechkbkp
+[![Build Status](https://travis-ci.com/james-d-elliott/go-hekatechkbkp.svg?branch=master)](https://travis-ci.com/james-d-elliott/go-hekatechkbkp)
 
 Utility to verify backups that have accompanying .sha1sums files, specifically designed to work with hekate style backups on the Switch.
 
