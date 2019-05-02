@@ -6,6 +6,17 @@ git:
   depth: 1
 before_script:
   - make test
+  - |
+    export PRERELEASE=false
+    if [[ ${TRAVIS_TAG} =~ ^(0|[1-9]+)\.(0|[1-9]+)\.(0|[1-9]+)(-[0-9a-zA-Z\.]+)?(\+[0-9a-zA-Z]+)?$ ]]; then
+      export SEMVER=${TRAVIS_TAG}
+      if [[ $TRAVIS_TAG == *"-alpha"* ]] || [[ $TRAVIS_TAG == *"-beta"* ]]; then
+        export PRERELEASE=true
+      fi
+    else
+      export SEMVER=0
+      export test=test
+    fi
 deploy:
   - provider: releases
     name: "$TRAVIS_TAG"
@@ -15,10 +26,10 @@ deploy:
     skip_cleanup: true
     file_glob: true
     file: out/*
-    prerelease: true
+    prerelease: $PRERELEASE
     draft: false
     on:
       branch: master
       repo: james-d-elliott/go-hekatechkbkp
       tags: true
-      condition: "$TRAVIS_TAG =~ ^v"
+      condition: "$SEMVER != 0"
