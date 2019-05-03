@@ -93,7 +93,7 @@ func main() {
 	for _, f := range files {
 		fileNameSums := f.Name()
 		if validSumsFile.MatchString(fileNameSums) {
-			fileName := fileNameSums[:len(fileNameSums)-9]
+			fileName := fileNameSums[:len(fileNameSums)-11]
 			fileInfo, err := os.Stat(filepath.FromSlash(directory + fileName))
 			if os.IsNotExist(err) {
 				log.Printf("MISSING: found checksum file but the expected file %s does not exist", fileName)
