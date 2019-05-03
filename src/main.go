@@ -52,11 +52,11 @@ func main() {
 	var debug int
 
 	//Setup and Parse Flags
-	flag.BoolVar(&logging, "log", true, "turns the log file on and off")
-	flag.StringVar(&logFileName, "log-file", "verification.log", "changes the log file name")
-	flag.BoolVar(&logConsole, "log-console", true, "turns the console logging on or off")
-	flag.IntVar(&debug, "debug", 0, "sets the debug level")
-	flag.StringVar(&directory, "dir", "./", "set the directory for the rawnand files")
+	flag.BoolVar(&logging, "log", true, "disables/enables the log sending output to the log file")
+	flag.StringVar(&logFileName, "log-file", "verification.log", "changes the filename of the log file")
+	flag.BoolVar(&logConsole, "log-console", true, "disables/enables the log sending output to the console")
+	flag.IntVar(&debug, "debug", 0, "sets the debug level which affects how many things are sent to the log")
+	flag.StringVar(&directory, "dir", "./", "set the source directory of the files to validate")
 	flag.Parse()
 
 	//Fix dir if it doesn't end with a forward slash or contains windows style dirs (we use filepath.FromSlash() to generate our OS independent slashes)
